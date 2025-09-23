@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion / Inscription</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Messages flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+              <li style="color: {% if category == 'danger' %}red{% else %}green{% endif %}">
+                {{ message }}
+              </li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <div class="form-container">
+            <!-- Formulaire de connexion -->
+            <form id="loginForm" method="POST">
+                <h2>Connexion</h2>
+                <input type="hidden" name="form_type" value="login">
+                <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <button type="submit">Se connecter</button>
+                <p>Pas encore inscrit ? <span id="showRegister" style="cursor:pointer; color:blue;">Créer un compte</span></p>
+            </form>
+
+            <!-- Formulaire d'inscription -->
+            <form id="registerForm" method="POST" style="display:none;">
+                <h2>Inscription</h2>
+                <input type="hidden" name="form_type" value="register">
+                <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <input type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
+                <button type="submit">S'inscrire</button>
+                <p>Déjà un compte ? <span id="showLogin" style="cursor:pointer; color:blue;">Se connecter</span></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const showRegister = document.getElementById("showRegister");
+        const showLogin = document.getElementById("showLogin");
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
+
+        showRegister.addEventListener("click", () => {
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+        });
+
+        showLogin.addEventListener("click", () => {
+            registerForm.style.display = "none";
+            loginForm.style.display = "block";
+        });
+    </script>
+</body>
+</html>
